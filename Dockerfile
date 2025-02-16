@@ -1,4 +1,4 @@
-FROM rocm/pytorch:rocm6.2_ubuntu20.04_py3.9_pytorch_release_2.3.0
+FROM rocm/pytorch:rocm6.3.2_ubuntu22.04_py3.9_pytorch_release_2.4.0
 
 RUN pip install -U pip && pip install wyoming==1.6.0 faster-whisper==1.0.3 tokenizers==0.13.*
 RUN apt-get update && apt-get -y install nano ffmpeg libomp-dev
