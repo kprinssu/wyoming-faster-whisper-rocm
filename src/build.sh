@@ -64,32 +64,18 @@ echo -e "${Gre} ----------------------------------------------------------------
 sudo ldconfig
 
 
-
-
 echo -e "\n${Gre} -----------------------------------------------------------------${RCol}"
 echo -e "${On_Gre} Python Package Assembly Omitted ${RCol}"
 echo -e "${Gre} -----------------------------------------------------------------${RCol}\n"
 # Change to the python directory
 cd ../python
 
-# # everything is functioning up to here, but then the python package build fails
-# # possibly build it in conda then install it outside of conda?
-
-# echo -e "${Gre} -----------------------------------------------------------------${RCol}"
-# echo -e "${On_Gre} 5. Setting Up Conda Environment.${RCol}"
-# echo -e "${Gre} -----------------------------------------------------------------${RCol}\n"
-
-# # Initialize conda
-# conda init bash
-
-# # Activate the conda environment
-# source activate py_3.9
 
 # echo -e "\n${Gre} -----------------------------------------------------------------${RCol}"
 # echo -e "${On_Gre} 6. Installing Python Requirements${RCol}"
 # echo -e "${Gre} -----------------------------------------------------------------${RCol}\n"
 # # Install Python dependencies
-pip install wheel==0.43.0 setuptools==69.5.1 pybind11==2.11.1
+pip install -r ./install_requirements.txt
 
 # echo -e "\n${Gre} -----------------------------------------------------------------${RCol}"
 # echo -e "${On_Gre} 7. Creating Wheel File${RCol}"
@@ -130,5 +116,5 @@ echo -e "\n${Gre} --------------------------------------------------------------
 echo -e "${On_Gre} FINAL. Installing Wheel File.${RCol}"
 echo -e "${Gre} -----------------------------------------------------------------${RCol}\n"
 
-# Install the built wheel
-pip install /src/*.whl
+# Install extra dependecies
+pip install -r /src/install_requirements.txt
