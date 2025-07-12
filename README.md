@@ -6,12 +6,12 @@ Faster whisper Running on AMD GPUs with modified CTranslate 2 Libraries served u
 
 ## System Overview
 
-This project ties together a few projects to make Faster Whisper work with an AMD GPU. This has only been built for an AMD APU (5650G) at this time.
+This project ties together a few projects to make Faster Whisper work with an AMD GPU.
 
 ### Host System & Hardware Requirements
 - AMD GPU or APU with an architecture `gfx900` or newer
 	- - Check you architecture [here](https://llvm.org/docs/AMDGPUUsage.html) if you don't know
-- At least 100gb of disk space.
+- At least 250GB of disk space.
 - [ROCm Installed ](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/index.html)
 - [Docker Installed](https://docs.docker.com/desktop/install/linux-install/)
 - [Docker Compose Plugin Installed](https://docs.docker.com/compose/install/linux/)
@@ -23,7 +23,7 @@ This project ties together a few projects to make Faster Whisper work with an AM
 - [btop](https://github.com/aristocratos/btop)
 	- Great for CPU and Memory Monitoring
 - [AMDGPU_TOP](https://github.com/Umio-Yasuno/amdgpu_top)
-	- Excellent Command Line Utility for Viewing GPU utilization. 
+	- Excellent Command Line Utility for Viewing GPU utilization.
 
 ## Project Components
 
@@ -31,11 +31,12 @@ This project ties together a few projects to make Faster Whisper work with an AM
 - [Faster Whisper](https://pypi.org/project/faster-whisper/)
 - [ROCm/Pytorch](https://hub.docker.com/r/rocm/pytorch)
 	- Build Requires Python 3.9, the project makes use of the 20.04 image.
-- [CTranslate2-rocm](https://github.com/arlo-phoenix/CTranslate2-rocm)
-	- This project is essential to running Faster Whisper as the standard CTranslate2 Library does not support ROCm natively. 
+- [CTranslate2-rocm](https://github.com/kprinssu/CTranslate2-rocm)
+	- This project is essential to running Faster Whisper as the standard CTranslate2 Library does not support ROCm natively.
 	- This project needs to be built to the GPU architecture specific to your hardware.
+  - Forked from upstream [CTranslate2 ROCm project](https://github.com/arlo-phoenix/CTranslate2-rocm)
 
-**Note:** The docker image required for this project is massive. On my system it is showing as 68g.4b.
+**Note:** You will need a large amount of disk space to build this image as the final Docker image is roughly 60GB in size.
 
 
 ## Instructions:
@@ -43,7 +44,7 @@ This project ties together a few projects to make Faster Whisper work with an AM
 1. Clone this repository and open the directory
 
 ```bash
-git clone https://github.com/Donkey545/wyoming-faster-whisper-rocm.git
+git clone https://github.com/kprinssu/wyoming-faster-whisper-rocm.git
 cd wyoming-faster-whisper-rocm/
 ```
 
@@ -75,7 +76,7 @@ services:
       - "/dev/dri"
       - "/dev/kfd"
     environment:
-      - HSA_OVERRIDE_GFX_VERSION=9.0.0 #This line can be removed if newer than VEGA
+      - PYTORCH_ROCM_ARCH=9.0.0 #This line can be removed if newer than VEGA
 ```
 3. Run Docker Compose
 ``` bash
@@ -84,7 +85,7 @@ docker compose up -d --build
 At this point you can configure the Whisper service with Wyoming in home assistant with the `<dockerhost_ip_address>:10300`.
 
 ### Optional Manual Build
-In the docker file, comment out the build script line, and chand the entrypoint command to `#ENTRYPOINT ["tail", "-f", "/dev/null"]`. Exporting the Pytorch ROCm Arch as an environment variable will restrict the scope of the build to your specific architecture. This caused some problems for me on my APU, so the support may vary.  Refer to the instruction on the ROCm Installation for [CTranslate2-rocm](https://github.com/arlo-phoenix/CTranslate2-rocm). 
+In the docker file, comment out the build script line, and chand the entrypoint command to `#ENTRYPOINT ["tail", "-f", "/dev/null"]`. Exporting the Pytorch ROCm Arch as an environment variable will restrict the scope of the build to your specific architecture. This caused some problems for me on my APU, so the support may vary.  Refer to the instruction on the ROCm Installation for [CTranslate2-rocm](https://github.com/arlo-phoenix/CTranslate2-rocm).
 
 3o. Run Docker Compose and Open an Interactive Terminal
 ``` bash
