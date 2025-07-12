@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 conda init bash
 source activate py_3.10
