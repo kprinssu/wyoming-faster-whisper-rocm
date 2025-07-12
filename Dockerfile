@@ -23,7 +23,7 @@ RUN cd /build/CTranslate2-rocm/python \
 
 FROM rocm/pytorch:rocm6.4.1_ubuntu22.04_py3.10_pytorch_release_2.6.0
 COPY --from=ctranslate2-build /build/CTranslate2-rocm/python/dist /app/ctranslate2-dist/
-
+COPY --from=ctranslate2-build /build/CTranslate2-rocm/build /app/ctranslate2-lib/
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends nano ffmpeg libomp-dev \
@@ -34,4 +34,4 @@ COPY src /app/src
 RUN /app/src/build.sh
 
 WORKDIR /app/src
-ENTRYPOINT ["run.sh"]
+ENTRYPOINT ["./run.sh"]
